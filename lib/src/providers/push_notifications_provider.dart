@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 //dLG_K61tQIyr41TWs_qYKg:APA91bFGuuaSfEgZkHzrsh2uB0oEtNwBmP2JT5Xfu8XZN5oSIXIgNGGp3LJ6Ev77WmBfdLy5SBp1uuVKe5JP55i1GJDdT0Qon6K40Psebt6U1VgFjkD7ygBfS0D5Mlw23_RFPQrFz9Yg
@@ -34,7 +35,7 @@ class PushNotificationsProvider{
 
     _firebaseMessaging.configure(
       onMessage: onMessage,
-      onBackgroundMessage: myBackgroundMessage,
+      onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessage,
       onLaunch: onLaunch,
       onResume: onResume,
     );
@@ -44,8 +45,17 @@ class PushNotificationsProvider{
     print('OnMessage');
     //print('Message: $message');
 
-    final argument = message['data']['name'];
+    //final argument = message['data']['name'];
     //print('argumento: $argument');
+
+    String argument = 'no-data';
+    if(Platform.isAndroid){
+      argument = message['data']['name'];
+    }
+    else{
+      argument = message['name'];
+    }
+
     _messagesStreamController.sink.add(argument);
   }
 
@@ -53,8 +63,17 @@ class PushNotificationsProvider{
     print('OnLaunch');
     //print('Message: $message');
 
-    final argument = message['data']['name'];
+    //final argument = message['data']['name'];
     //print('argumento: $argument');
+
+    String argument = 'no-data';
+    if(Platform.isAndroid){
+      argument = message['data']['name'];
+    }
+    else{
+      argument = message['name'];
+    }
+
     _messagesStreamController.sink.add(argument);
   }
 
@@ -62,8 +81,17 @@ class PushNotificationsProvider{
     print('OnResume');
     //print('Message: $message');
 
-    final argument = message['data']['name'];
+    //final argument = message['data']['name'];
     //print('argumento: $argument');
+
+    String argument = 'no-data';
+    if(Platform.isAndroid){
+      argument = message['data']['name'];
+    }
+    else{
+      argument = message['name'];
+    }
+
     _messagesStreamController.sink.add(argument);
   }
 
